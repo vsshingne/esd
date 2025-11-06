@@ -1,0 +1,77 @@
+#include <lpc214x.h>
+#include <string.h>
+
+#define RS (1<<16)
+#define EN (1<<17)
+#define D4 (1<<18)
+#define D5 (1<<19)
+#define D6 (1<<20)
+#define D7 (1<<21)
+
+void delay(int ms){
+	int i,j;
+	for(i=0; i<ms; i++)
+		for(j=0; j<1000; j++);
+}
+
+void lcd_cmd(unsigned char cmd){
+	IO0CLR = RS;
+	IO0CLR = D4|D5|D6|D7;
+	if(cmd & 0x10) IO0SET=D4;
+	if(cmd & 0x20) IO0SET=D5;
+	if(cmd & 0x40) IO0SET=D6;
+	if(cmd & 0x80) IO0SET=D7;
+	IO0SET = EN;
+	delay(10);
+	IO0CLR = EN;
+	IO0CLR = D4|D5|D6|D7;
+	if(cmd & 0x01) IO0SET=D4;
+	if(cmd & 0x02) IO0SET=D5;
+	if(cmd & 0x04) IO0SET=D6;
+	if(cmd & 0x08) IO0SET=D7;
+	IO0SET = EN;
+	delay(10);
+	IO0CLR = EN;
+}
+
+void lcd_data(unsigned char data){
+	IO0SET = RS;
+	IO0CLR = D4|D5|D6|D7;
+	if(data & 0x10) IO0SET=D4;
+	if(data & 0x20) IO0SET=D5;
+	if(data & 0x40) IO0SET=D6;
+	if(data & 0x80) IO0SET=D7;
+	IO0SET = EN;
+	delay(10);
+	IO0CLR = EN;
+	IO0CLR = D4|D5|D6|D7;
+	if(data & 0x01) IO0SET=D4;
+	if(data & 0x02) IO0SET=D5;
+	if(data & 0x04) IO0SET=D6;
+	if(data & 0x08) IO0SET=D7;
+	IO0SET = EN;
+	delay(10);
+	IO0CLR = EN;
+}
+
+void lcd_init(){
+	IO0DIR |= RS|EN|D4|D5|D6|D7;
+	lcd_cmd(0x02);
+	lcd_cmd(0x28);
+	lcd_cmd(0x0C);
+	lcd_cmd(0x06);
+	lcd_cmd(0x01);
+}
+
+void lcd_string(char *str){
+	while(*str) lcd_data(*str++);
+}
+
+int main(){
+	lcd_init();
+	lcd_string("VSPRIME");
+	lcd_cmd(0xC0);   
+	lcd_string("WELCOME");
+
+	while(1);
+}
