@@ -1,0 +1,24 @@
+#include <LPC214x.h>
+
+unsigned int adc_value;
+
+void init_adc(void) {
+    PINSEL1 |= (1 << 24);   
+    AD0CR = (1 << 1)        
+          | (4 << 8)        
+          | (1 << 21);      
+}
+
+unsigned int read_adc(void) {
+    AD0CR |= (1 << 24);                 
+    while ((AD0GDR & (1U << 31)) == 0); 
+    AD0CR &= ~(7 << 24);
+    return ((AD0GDR >> 6) & 0x3FF);    
+}
+
+int main(void) {
+    init_adc();
+    while (1) {
+        adc_value = read_adc();         
+    }
+}
