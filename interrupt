@@ -1,0 +1,32 @@
+ #include <LPC214X.H>
+ void delay()
+ {
+    unsigned int i, j;
+    for (j = 0; j < 100; j++)
+    {
+        for (i = 0; i < 1000; i++);
+    }
+ }
+ void isr_ext0() __irq
+ {
+    IOPIN0 = 0x00000010;
+    delay();
+    IOCLR0 = 0x00000010;
+    delay();
+    EXTINT = 0x00000001;
+    VICVectAddr = 0x00;
+ }
+ void irq_init()
+ {
+    PINSEL0 = 0x0000000C;
+    VICIntSelect = 0x00000000;
+    VICVectAddr0 = (unsigned)isr_ext0;
+    VICVectCntl0 = 0x0000002E;
+    VICIntEnable = 0x00004000;
+ }
+int main()
+ {
+ IODIR0 = 0x00000010;
+ irq_init();
+ while (1);
+ }
