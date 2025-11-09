@@ -1,0 +1,34 @@
+close all;
+clc;
+x1=input('Enter the sequence');
+N=length(x1);
+X=fft(x1,N);
+t=0:N-1;
+
+subplot(4,1,1);
+stem(t,x1);
+axis([0 5 0 5]);
+xlabel('Time(s)');
+ylabel('Amplitude');
+title('Time domain - Input sequence');
+
+subplot(4,1,2);
+stem(t,X)
+axis([-5 5 -5 5]);
+xlabel('Frequency');
+ylabel('|X(k)|');
+title('Frequency Domain-Magnitude Response');
+
+subplot(4,1,3)
+plot(t,angle(X));
+xlabel('Frequency');
+ylabel('Phase');
+title('Frequency Domain -Phase Response');
+
+a = ifft(X,N);
+
+subplot(4,1,4);
+stem(t,a);
+xlabel('Time');
+ylabel('Ampitude');
+title('Reconstructed signal')
