@@ -1,0 +1,15 @@
+clear all;
+close all;
+clc;
+x = input('Enter four samples: ');
+h = input('Enter four samples: ');
+x1 = fft(x);
+y1 = fft(h);
+for i = 1:4
+z1(i) = x1(i) * y1(i);
+end
+disp(z1);
+z = ifft(z1);
+disp(z);
+c = cconv(x, h, 4);
+disp(c);
