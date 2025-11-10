@@ -1,0 +1,28 @@
+clear all; 
+close all; 
+clc; 
+alphap = 0.01; 
+alphas = 44; 
+ws = 30; 
+wp = 20; 
+wfs = 100; 
+B = ws - wp; 
+wc = 0.5*(ws + wp); 
+wcr = wc * 2 * pi / wfs; 
+D = ( alphas - 7.95 ) / 14.36 
+N = ceil(( wfs * D / B ) + 1 ) 
+Alpha = ( N – 1 ) / 2; 
+gamma = (( 0.5842 * (alphas - 21) .  ^( 0.4 ) + 0.07886 * (alphas - 21))); 
+n = 0 : 1 : N - 1; 
+a1 = sin( wcr * (n - alpha)); 
+a2 = (pi * (n - alpha)); 
+hd = a1 ./ a2; 
+% hd = sin( wcr * (n-alpha))./(pi*(n-alpha)); 
+hd( alpha + 1 ) = 0.5; 
+wk = kaiser( N, gamma )'; 
+hn = hd. * wk; 
+w = 0:01:pi; 
+h=freqz(hn,1,w); 
+plot(w/pi,20*log10(abs(h))) 
+xlabel('Normalized frequency \omega/\pi'); 
+ylabel('Magnitude in dB');
