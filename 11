@@ -1,1 +1,37 @@
+window 
 
+ clear all; close all; clc;
+ wc = 0.5*pi; 
+N_values = [11, 55, 95]; 
+eps = 0.001; 
+figure; hold on; 
+for idx = 1:length(N_values) 
+N = N_values(idx); 
+alpha = (N-1)/2; 
+n = 0:1:N-1; 
+
+hd1 = sin(wc*(n-alpha+eps)); 
+hd2 = pi*(n-alpha+eps); 
+hd = hd1 ./ hd2; 
+
+wr = boxcar(N); 
+hn = hd .* wr'; 
+[h,w] = freqz(hn,1,1024); 
+plot(w/pi,abs(h),'DisplayName',['Boxcar, N=',num2str(N)]); 
+
+wh = hamming(N); 
+hn = hd .* wh'; 
+h = freqz(hn,1,1024); 
+plot(w/pi,abs(h),'r','DisplayName',['Hamming, N=',num2str(N)]); 
+
+wb = blackman(N); 
+hn = hd .* wb'; 
+h = freqz(hn,1,1024); 
+plot(w/pi,abs(h),'g--','DisplayName',['Blackman, N=',num2str(N)]); 
+end 
+
+xlabel('Normalized Frequency'); 
+ylabel('Magnitude'); 
+legend show; 
+grid on; 
+title('FIR Low-pass Filter using Rectangular, Hamming, and Blackman Windows');
