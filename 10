@@ -1,0 +1,14 @@
+clc; clear all; close all;
+N = 10;
+n = 0:N-1;
+x = sin(2*pi*n/10) + sin(2*pi*n/5);
+L = 3;
+x_up = upsample(x, L);
+subplot(2,1,1);
+stem(n, x, 'filled');
+title('Original Signal');
+xlabel('n'); ylabel('x(n)');
+subplot(2,1,2);
+stem(0:length(x_up)-1, x_up, 'filled');
+title(['Upsampled Signal (L = ' num2str(L) ')']);
+xlabel('n'); ylabel('x_{up}(n)');
