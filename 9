@@ -1,0 +1,14 @@
+clc; clear all; close all;
+N = 10;
+n = 0:N-1;
+x = sin(2*pi*n/10) + sin(2*pi*n/5);
+M = 2;
+x_down = downsample(x, M);
+subplot(2,1,1);
+stem(n, x, 'filled');
+title('Original Signal');
+xlabel('n'); ylabel('x(n)');
+subplot(2,1,2);
+stem(0:length(x_down)-1, x_down, 'filled');
+title(['Downsampled Signal (M = ' num2str(M) ')']);
+xlabel('n'); ylabel('x_{down}(n)');
