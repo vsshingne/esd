@@ -1,0 +1,17 @@
+clc; clear all; close all;
+
+b = [1, -1];
+zi = 0;
+n = 0:99;
+x1 = cos(0.1 * n);
+x2 = cos(0.4 * n);
+a = x1 + x2;
+y = filter(b, 1, a, zi);
+
+plot(n, y, 'r', n, x2, 'b', n, x1, 'r-', n, a, 'b-');
+grid on;
+axis([0 100 -2 2]);
+ylabel('Amplitude');
+xlabel('Time Index n');
+legend('y[n]', 'x2[n]', 'x1[n]', 'a[n]');
+title('High-Pass Filtering of Two Cosine Signals');
